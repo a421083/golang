@@ -17,7 +17,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         automake \
         libtool \
         curl \
-        unzip 
+        unzip \
+	cmake
 
 RUN cd /var/lib/apt/lists/ && git clone https://github.com/google/protobuf.git \
 && cd protobuf && git submodule update --init --recursive && ./autogen.sh \
