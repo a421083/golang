@@ -17,9 +17,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         automake \
         libtool \
         curl \
-        unzip \
-	&& rm -rf /var/lib/apt/lists/*
+        unzip 
 
 RUN cd /var/lib/apt/lists/ && git clone https://github.com/google/protobuf.git \
-&& cd cd protobuf && git submodule update --init --recursive && ./autogen.sh \
+&& cd protobuf && git submodule update --init --recursive && ./autogen.sh \
 && ./configure --prefix=/usr/local/ && make && make install && ldconfig
+
+RUN cd /usr/local/ && git clone -b RELEASE_TAG_HERE https://github.com/grpc/grpc \
+&& cd grpc && git submodule update --init && mkdir -p cmake/build \
+&& cd cmake/build && cmake ../.. && make protoc grpc_php_plugin
+
+RUN rm -rf /var/lib/apt/lists/*
